@@ -20,4 +20,8 @@ class Board
     @cells
   end
 
+  def valid_coordinate?(coordinate)
+    @cells.include?(coordinate) 
+  end
+
 end

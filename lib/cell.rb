@@ -7,6 +7,7 @@ class Cell
     @ship = nil
     @empty = true
     @fired_upon = false
+    @render = "."
   end
 
   def empty?
@@ -19,11 +20,27 @@ class Cell
   end
 
   def fired_upon
-    @ship.hit
     @fired_upon = true
+    if @ship != nil
+      @ship.hit
+    end
   end
 
   def fired_upon?
     @fired_upon
   end
+
+  def render(ship = false)
+    if ship == true
+      if fired_upon? == false
+        "S"
+      elsif fired_upon? == true
+         "H"
+       end
+    elsif fired_upon?
+      "M"
+    else "."
+    end
+  end
+
 end

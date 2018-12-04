@@ -8,14 +8,16 @@ class Board
   end
 
   def cells(row = 4)
-    alpha = ('A'..'Z').to_a
+    alpha = ('A'..'D').to_a
     num = (1..row).to_a
-    @cells = {}
-    alpha.each do |letter|
-      row.times do |blk|
-        @cells[letter + num.to_s] = Cell.new(letter + num.to_s)
+
+    alpha.each do |row|
+      num.each do |column|
+        coordinate = row + column.to_s
+        @cells[coordinate] = Cell.new(coordinate)
       end
     end
+
     binding.pry
   end
 

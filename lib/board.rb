@@ -27,6 +27,7 @@ class Board
     if ship.length == coordinates.count
       split_coordinates = split_coordinates(coordinates)
       consecutive_numbers(ship, split_coordinates)
+      consecutive_alphabet(ship, coordinates)
     else
       false
     end
@@ -54,7 +55,18 @@ class Board
     end
   end
 
-
-
+  def consecutive_alphabet(ship, split_coordinates)
+    alphabet = []
+    split_coordinates.each do |cord|
+      alphabet << cord[0].ord
+    end
+    smallest = alphabet.min
+    largest = alphabet.max
+    if (smallest..largest).count == ship.length
+      true
+    else
+      false
+    end
+  end
 
 end

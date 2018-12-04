@@ -23,7 +23,11 @@ class Cell
   def fired_upon
     if @ship != nil
       @ship.hit
-      @render = "H"
+        if @ship.sunk?
+          @render = "X"
+        else
+          @render = "H"
+        end
     else
       @render = "M"
     end

@@ -82,11 +82,21 @@ class CellTest < Minitest::Test
     cell = Cell.new("B4")
     cruiser = Ship.new("Cruiser",3)
     cell.place_ship(cruiser)
-    # cell.render(true)
+    cell.render(true)
     cell.fired_upon
 
-    assert_equal "H", cell.render(true)
+    assert_equal "H", cell.render
   end
 
+  def test_ship_can_sink
+    cell = Cell.new("B4")
+    cruiser = Ship.new("Cruiser",3)
+    cell.place_ship(cruiser)
+    cell.render(true)
+    cell.fired_upon
+    cell.fired_upon
+    cell.fired_upon
 
+    assert_equal "X", cell.render
+  end
 end

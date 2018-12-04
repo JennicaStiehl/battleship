@@ -58,4 +58,35 @@ class CellTest < Minitest::Test
 
     assert_equal 2, cell.ship.health
   end
+
+  def test_cell_renders
+    cell = Cell.new("B4")
+    assert_equal ".", cell.render
+  end
+
+  def test_it_can_be_fired_upon_with_no_ship
+    cell = Cell.new("B4")
+    cell.fired_upon
+    assert_equal "M", cell.render
+  end
+
+  def test_it_can_render_a_ship
+    cell = Cell.new("B4")
+    cruiser = Ship.new("Cruiser",3)
+    cell.place_ship(cruiser)
+
+    assert_equal "S", cell.render(true)
+  end
+
+  def test_it_can_render_a_hit
+    cell = Cell.new("B4")
+    cruiser = Ship.new("Cruiser",3)
+    cell.place_ship(cruiser)
+    # cell.render(true)
+    cell.fired_upon
+
+    assert_equal "H", cell.render(true)
+  end
+
+
 end

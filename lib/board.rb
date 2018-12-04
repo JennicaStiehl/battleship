@@ -17,8 +17,7 @@ class Board
         @cells[coordinate] = Cell.new(coordinate)
       end
     end
-
-    binding.pry
+    @cells
   end
 
 end

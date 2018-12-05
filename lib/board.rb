@@ -3,15 +3,14 @@ require './lib/cell'
 class Board
   attr_reader :cells
 
-  def initialize
+  def initialize(number = 4)
     @cells = {}
-    @alphabet = ('A'..'D').to_a
-    @num = (1..4).to_a
+    create_board(number)
   end
 
-  def cells(row = 4)
-    @alphabet.each do |row|
-      @num.each do |column|
+  def create_board(number)
+    ('A'..('A'.ord + (number -1)).chr).to_a.each do |row|
+      (1..number).to_a.each do |column|
         coordinate = row + column.to_s
         @cells[coordinate] = Cell.new(coordinate)
       end
@@ -28,4 +27,9 @@ class Board
     placement.validation_check
   end
 
+  def place(ship, coordinates)
+      coordinates.each do |coord|
+        @cells[coord].place_ship(ship)
+      end
+  end
 end

@@ -1,6 +1,7 @@
 require './test/test_helper'
 require './lib/board'
 require './lib/ship'
+require './lib/validator'
 
 class BoardTest < Minitest::Test
 
@@ -45,6 +46,18 @@ class BoardTest < Minitest::Test
 
     assert_equal true, board.valid_placement?(cruiser, ["A1", "A2", "A3"])
     assert_equal false, board.valid_placement?(cruiser, ["A1", "A2", "A4"])
+    assert_equal false, board.valid_placement?(submarine, ["A1", "C1"])
+  end
+
+  def test_it_cant_place_diagonal
+    board = Board.new
+    board.cells
+    cruiser = Ship.new("curiser", 3)
+    submarine = Ship.new("submarine", 2)
+
+    assert_equal false, board.valid_placement?(cruiser, ["A1", "B2", "C3"])
+    assert_equal false, board.valid_placement?(cruiser, ["C2", "D3"])
+
 
   end
 

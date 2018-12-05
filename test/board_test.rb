@@ -6,7 +6,7 @@ require './lib/validator'
 class BoardTest < Minitest::Test
 
   def test_it_exits
-    board = Board.new
+    board = Board.new(4)
     assert_instance_of Board, board
   end
 
@@ -57,9 +57,17 @@ class BoardTest < Minitest::Test
 
     assert_equal false, board.valid_placement?(cruiser, ["A1", "B2", "C3"])
     assert_equal false, board.valid_placement?(cruiser, ["C2", "D3"])
-
-
   end
 
-
+  def test_it_can_place_ships
+    board = Board.new
+    cruiser = Ship.new("curiser", 3)
+    board.cells
+    # binding.pry
+    board.place(cruiser, ["A1","A2","A3"] )
+    cell_1 = board.cells["A1"]
+    cell_2 = board.cells["A2"]
+    cells_3 = board.cells["A3"]
+    assert_equal cruiser, cell_1.ship
+  end
 end

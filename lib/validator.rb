@@ -6,9 +6,10 @@ class Validator
               :coordinate_numbers,
               :coordinate_letters
 
-  def initialize(ship, coordinates)
+  def initialize(ship, coordinates, board)
     @ship = ship
     @coordinates = coordinates
+    @board = board
     @split_coordinates = []
     @coordinate_numbers = []
     @coordinate_letters = []
@@ -46,20 +47,33 @@ class Validator
     @coordinate_letters.uniq == [@coordinate_letters[0]]
   end
 
-  def validation_check
-    split_coordinates
-    if @coordinates.uniq.count != @ship.length
-       return false
-    elsif consecutive_numbers && consecutive_alphabet
-       return false
-    elsif consecutive_numbers && same_alphabet
-       return true
-    elsif same_number && same_alphabet
-       return false
-    elsif same_number && consecutive_alphabet
-       return true
+  def overlapping_ships(coordinates)
+    coordinates.each do |coord|
+      if @board.cells[coord].empty? == true
+        return true
+      else
+        return false
+      end
     end
+  end
 
+  def validation_check
+    if overlapping_ships(@coordinates)
+      split_coordinates
+      if @coordinates.uniq.count != @ship.length
+        return false
+      elsif consecutive_numbers && consecutive_alphabet
+        return false
+      elsif consecutive_numbers && same_alphabet
+        return true
+      elsif same_number && consecutive_alphabet
+        return true
+      else
+        return false
+      end
+    else
+      return false
+    end
   end
 
 end

@@ -24,7 +24,7 @@ class Board
   end
 
   def valid_placement?(ship, coordinates)
-    placement = Validator.new(ship, coordinates)
+    placement = Validator.new(ship, coordinates, self)
     placement.validation_check
   end
 

@@ -1,5 +1,10 @@
 require 'pry'
 class Validator
+  attr_reader :coordinates,
+              :ship,
+              :split_coordinates,
+              :coordinate_numbers,
+              :coordinate_letters
 
   def initialize(ship, coordinates)
     @ship = ship
@@ -7,7 +12,6 @@ class Validator
     @split_coordinates = []
     @coordinate_numbers = []
     @coordinate_letters = []
-    @valid_placement = false
   end
 
   def split_coordinates
@@ -44,18 +48,18 @@ class Validator
 
   def validation_check
     split_coordinates
-    if @coordinates.count != @ship.length
-      @valid_placement = false
+    if @coordinates.uniq.count != @ship.length
+       return false
     elsif consecutive_numbers && consecutive_alphabet
-      @valid_placement = false
+       return false
     elsif consecutive_numbers && same_alphabet
-      @valid_placement = true
+       return true
     elsif same_number && same_alphabet
-      @valid_placement = false
+       return false
     elsif same_number && consecutive_alphabet
-      @valid_placement = true
+       return true
     end
-    @valid_placement
+
   end
 
 end

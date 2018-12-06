@@ -1,4 +1,5 @@
 require './lib/cell'
+require './lib/validator'
 
 class Board
   attr_reader :cells

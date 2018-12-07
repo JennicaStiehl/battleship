@@ -116,6 +116,8 @@ class BoardTest < Minitest::Test
     board.fire_shot("D1")
 
     assert_equal " 1 2 3 4 \nA H . . . \nB . . . M \nC X . . . \nD X . . . \n", board.render
+    assert_equal " 1 2 3 4 \nA H S S . \nB . . . M \nC X . . . \nD X . . . \n", board.render(true)
+
   end
 
 

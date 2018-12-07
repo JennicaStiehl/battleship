@@ -6,12 +6,12 @@ class Board
 
   def initialize(number = 4)
     @cells = {}
-    @number = number
-    create_board(number)
+    @number = number.to_i
+    create_board(@number)
   end
 
   def create_board(number)
-    ('A'..('A'.ord + (number -1)).chr).to_a.each do |row|
+    ('A'..('A'.ord + (number - 1)).chr).to_a.each do |row|
       (1..number).to_a.each do |column|
         coordinate = row + column.to_s
         @cells[coordinate] = Cell.new(coordinate)
@@ -59,6 +59,6 @@ class Board
 
   def fire_shot(cell)
     @cells[cell].fired_upon
-  end 
+  end
 
 end

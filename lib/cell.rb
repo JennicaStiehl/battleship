@@ -40,9 +40,15 @@ class Cell
   end
 
   def render(ship = false)
+    #binding.pry
     if ship == true
-      @render = "S"
+      if @ship != nil
+        @render = "S"
+      else
+        @render
+      end
+    else
+      @render
     end
-    @render
    end
 end

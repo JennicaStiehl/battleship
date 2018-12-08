@@ -5,6 +5,8 @@ require 'pry'
 module Game
   @board
   @comp_board
+  @player_shots = []
+  @computer_shots = []
 
 
   def self.welcome
@@ -55,8 +57,8 @@ module Game
       ship = Ship.new("Destroyer", 2)
       comp_ship = Ship.new("Destroyer", 2)
       self.ship_placement_response(ship, comp_ship)
-    elsif user_input == "battleship"
-      #ends user setup
+    elsif user_input == "start"
+      #Start#----#ends user setup
     else
       puts "That is not a recognized ship."
       self.ship_placement
@@ -97,15 +99,38 @@ module Game
     rows = @comp_board.number
     final_coord = ""
 
-    number_of_coord.times do
-    alpha_var = rand('A'.ord..('A'.ord + (rows - 1))).chr
-    num_var = rand(1..rows).to_s
-    final_coord << alpha_var + num_var + ","
+    empty_spaces = []
+    @comp_board.cells.values.each do |value|
+      if value.empty?
+        empty_spaces << value.coordinate
+      end
+    end
+    # empty_spaces = @comp_board.cells.keys
+    coordinates = []
+    empty_spaces.each_cons(number_of_coord) { |group| coordinates << group }
+    valid_groups = []
+    coordinates.each do |coord|
+      if @comp_board.valid_placement?(ship, coord) == true
+        valid_groups << coord
+      end
+    end
+    # binding.pry
+    end_of_range = valid_groups.count
+    coords = valid_groups[rand(0..end_of_range)]
+    coords.each do |coord|
+    final_coord << coord + ','
     end
     final_coord
   end
 
+  def play
+    #take shots
+    player_shots << turn.player_shot
 
+    turn.computer_take_shot
+        #render both boards
+    #report results
+  end
 
 
 

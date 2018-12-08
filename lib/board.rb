@@ -23,10 +23,15 @@ class Board
 
   def valid_coordinate?(coordinate)
     @cells.include?(coordinate)
+    
   end
 
   def valid_placement?(ship, coordinates)
-    split_coordin = coordinates.split(",")
+    if coordinates.class == String
+      split_coordin = coordinates.split(",")
+    else
+      split_coordin = coordinates
+    end
     placement = Validator.new(ship, split_coordin, self)
     placement.validation_check
   end

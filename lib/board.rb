@@ -2,7 +2,8 @@ require './lib/cell'
 require './lib/validator'
 
 class Board
-  attr_reader :cells
+  attr_reader :cells,
+              :number
 
   def initialize(number = 4)
     @cells = {}
@@ -25,14 +26,17 @@ class Board
   end
 
   def valid_placement?(ship, coordinates)
-    placement = Validator.new(ship, coordinates, self)
+    split_coordin = coordinates.split(",")
+    placement = Validator.new(ship, split_coordin, self)
     placement.validation_check
   end
 
   def place(ship, coordinates)
-      coordinates.each do |coord|
-        @cells[coord].place_ship(ship)
-      end
+    split_coordin = coordinates.split(",")
+        split_coordin.each do |coord|
+          @cells[coord].place_ship(ship)
+        end
+
   end
 
   def render(ship = false)

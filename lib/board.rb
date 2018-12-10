@@ -28,6 +28,7 @@ class Board
 
   def valid_placement?(ship, coordinates)
     if coordinates.class == String
+      # binding.pry
       split_coordin = coordinates.split(",")
     else
       split_coordin = coordinates

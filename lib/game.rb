@@ -1,7 +1,6 @@
 require './lib/board'
 require './lib/ship'
 require './lib/turn'
-require './lib/setup'
 require 'pry'
 
 class Game
@@ -118,7 +117,7 @@ class Game
       print "> "
       ship_name = gets.chomp.capitalize
       sleep 0.5
-      puts "How much health does this ship have?"
+      puts "How much health(up to 9) does this ship have?"
       print "> "
       ship_length = gets.chomp.to_i
       sleep 0.5
@@ -157,7 +156,7 @@ class Game
         ship_placement_response(ship, comp_ship)
     end
     puts "Go ahead and place as many ships as you would like..."
-    puts "Keep in mind.. I get them to!"
+    puts "Keep in mind.. I get them too!"
     ship_list
   end
 
@@ -179,13 +178,33 @@ class Game
         empty_spaces << value.coordinate
       end
     end
+    first_coord = empty_spaces.shuffle[0]
+    random = hor_or_vert = rand(0..1)
+    single_digit = first_coord.split(//)
+    first_coord =
     coordinates = []
-    empty_spaces.each_cons(number_of_coord) do |group|
-      coordinates << group
+    if random = 1
+    vert = []
+      empty_spaces.each do |space|
+        vert << space if space.include?(single_digit[1])
+      end
+      vert.each_cons(3) do |group|
+        coordinates << group
+      end
+    else
+      empty_spaces.each do |space|
+        vert << space if space.include?(single_digit[0])
+      end
+      vert.each_cons(3) do |group|
+        coordinates << group
+      end
     end
+
+    # empty_spaces.each_cons(number_of_coord) do |group|
+    #   coordinates << group
+    # end
     valid_groups = []
     coordinates.each do |coord|
-
       if @comp_board.valid_placement?(ship, coord) == true
         valid_groups << coord
       end
@@ -232,7 +251,7 @@ class Game
 
         elsif player_health < 1
           puts "Better luck next time!"
-          
+
         end
       end
     end

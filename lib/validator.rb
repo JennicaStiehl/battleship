@@ -10,19 +10,19 @@ class Validator
     @ship = ship
     @coordinates = coordinates
     @board = board
-    @split_coordinates = []
     @coordinate_numbers = []
     @coordinate_letters = []
   end
 
   def split_coordinates
+    split_coordinates = []
     @coordinates.each do |coord|
-      @split_coordinates << coord.chars
+      split_coordinates << coord.chars
     end
-    @split_coordinates.each do |number|
+    split_coordinates.each do |number|
       @coordinate_numbers << number[1]
     end
-    @split_coordinates.each do |letter|
+    split_coordinates.each do |letter|
       @coordinate_letters << letter[0].ord
     end
   end

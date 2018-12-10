@@ -1,4 +1,4 @@
 require './lib/game'
 
-
-Game.welcome
+game = Game.new
+game.welcome

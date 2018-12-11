@@ -42,9 +42,9 @@ class Game
         print "> "
         board_size = gets.chomp.to_i
         sleep 0.5
-        until board_size < 27
+        until board_size < 9
           puts "-" * 30
-          puts "Im sorry, the board cannot be more that 26 rows/colums."
+          puts "Im sorry, the board cannot be more that 9 rows/colums."
           sleep 1
           puts "How many rows/columns would you like your board to be?"
           print "> "
@@ -65,9 +65,9 @@ class Game
     puts "Here is a list of ships for you to choose from..."
     sleep 1
     ship_list
-    until user_input == 'start'
-      ship_creation(user_input)
-    end
+    # until user_input == 'start'
+    #   ship_creation(user_input)
+    # end
     taking_turns
   end
 
@@ -85,10 +85,11 @@ class Game
     print "> "
     user_input = gets.chomp.downcase
     sleep 0.5
-    until user_input == "start"
-      ship_creation(user_input)
+      if user_input == "start"
+        taking_turns
+      else
+        ship_creation(user_input)
     end
-    taking_turns
   end
 
   def ship_creation(user_input)
@@ -138,11 +139,9 @@ class Game
     puts "Select #{ship.length} coordinates..."
     puts "Or enter 'cancel' to go back to the ship selection."
     puts @board.render(true)
-    user_placement = gets.chomp
+    user_placement = gets.chomp.upcase
     if validate_input(user_placement) == true
-          if user_placement == "cancel"
-            ship_placement
-          elsif @board.valid_placement?(ship, user_placement) == true
+          if @board.valid_placement?(ship, user_placement) == true
             @board.place(ship, user_placement)
             @player_health += 1
             until @comp_board.valid_placement?(ship, comp_cords) == true
@@ -150,10 +149,16 @@ class Game
             end
             @comp_board.place(comp_ship, comp_cords)
             @comp_health += 1
+          else
+            puts "That is an invalid placement."
+          end
+    elsif user_placement == "cancel"
+      ship_list
     else
         puts "Sorry that is an invalid placement."
-      end
         ship_placement_response(ship, comp_ship)
+    # end
+    # ship_placement_response(ship, comp_ship)
     end
     puts "Go ahead and place as many ships as you would like..."
     puts "Keep in mind.. I get them too!"
@@ -183,19 +188,19 @@ class Game
     single_digit = first_coord.split(//)
     first_coord =
     coordinates = []
-    if random = 1
     vert = []
+    if random == 1
       empty_spaces.each do |space|
         vert << space if space.include?(single_digit[1])
       end
-      vert.each_cons(3) do |group|
+      vert.each_cons(number_of_coord) do |group|
         coordinates << group
       end
     else
       empty_spaces.each do |space|
         vert << space if space.include?(single_digit[0])
       end
-      vert.each_cons(3) do |group|
+      vert.each_cons(number_of_coord) do |group|
         coordinates << group
       end
     end
@@ -205,12 +210,13 @@ class Game
     # end
     valid_groups = []
     coordinates.each do |coord|
+      # binding.pry
       if @comp_board.valid_placement?(ship, coord) == true
         valid_groups << coord
       end
     end
-    end_of_range = valid_groups.count
-    coords = valid_groups[rand(end_of_range)]
+    valid_groups.shuffle!
+    coords = valid_groups[0]
     coords.each do |coord|
     final_coord << coord + ','
     end
@@ -229,6 +235,7 @@ class Game
   def taking_turns
     until @player_health < 1 || @comp_health < 1
       take_turn
+      break
     end
   end_game
   end
@@ -246,13 +253,13 @@ class Game
       if user_input == "y"
       welcome
       elsif user_input == "n"
-        if comp_health < 1
+        # if comp_health < 1
           puts "I'll get you next time!"
 
-        elsif player_health < 1
+        # elsif player_health < 1
           puts "Better luck next time!"
-
-        end
+          puts "Goodbye!"
+          break
       end
     end
   end

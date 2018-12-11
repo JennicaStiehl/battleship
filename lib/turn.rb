@@ -21,7 +21,7 @@ class Turn
 
   def person_take_shot
     puts "Please enter a coordinate."
-    shot = gets.chomp
+    shot = gets.chomp.upcase
     if @computer_board.valid_coordinate?(shot) == true
       if @game.player_shots.include?(shot) == true
         puts "You have already fired at that location!"
@@ -30,7 +30,6 @@ class Turn
         @computer_board.fire_shot(shot)
         @player_shot = shot
       end
-    else
       puts "Please try again."
       person_take_shot
     end

@@ -14,7 +14,7 @@ class CellTest < Minitest::Test
     assert_equal "B4", cell.coordinate
   end
 
-  def test_it_has_a_ship
+  def test_it_does_not_start_with_ship
     cell = Cell.new("B4")
 
     assert_nil cell.ship
@@ -42,12 +42,21 @@ class CellTest < Minitest::Test
     assert_equal false, cell.empty?
   end
 
-  def test_was_it_fired_at
+  def test_it_starts_not_fired_upon
     cell = Cell.new("B4")
     cruiser = Ship.new("cruiser", 3)
     cell.place_ship(cruiser)
 
     assert_equal false, cell.fired_upon?
+  end
+
+  def test_it_can_be_fired_upon
+    cell = Cell.new("B4")
+    cruiser = Ship.new("cruiser", 3)
+    cell.place_ship(cruiser)
+    cell.fired_upon
+
+    assert_equal true, cell.fired_upon?
   end
 
   def test_it_can_fire_at_ship
@@ -89,14 +98,18 @@ class CellTest < Minitest::Test
   end
 
   def test_ship_can_sink
-    cell = Cell.new("B4")
+    cell_1 = Cell.new("B2")
+    cell_2 = Cell.new("B3")
+    cell_3 = Cell.new("B4")
     cruiser = Ship.new("Cruiser",3)
-    cell.place_ship(cruiser)
-    cell.render(true)
-    cell.fired_upon
-    cell.fired_upon
-    cell.fired_upon
+    cell_1.place_ship(cruiser)
+    cell_2.place_ship(cruiser)
+    cell_3.place_ship(cruiser)
 
-    assert_equal "X", cell.render
+    cell_1.fired_upon
+    cell_2.fired_upon
+    cell_3.fired_upon
+
+    assert_equal "X", cell_3.render
   end
 end

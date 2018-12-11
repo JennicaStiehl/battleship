@@ -66,12 +66,10 @@ class BoardTest < Minitest::Test
   end
 
   def test_it_can_place_ships
-    # skip
     board = Board.new
     cruiser = Ship.new("curiser", 3)
 
-    # binding.pry
-    board.place(cruiser, ["A1","A2","A3"] )
+    board.place(cruiser, "A1,A2,A3" )
     cell_1 = board.cells["A1"]
     cell_2 = board.cells["A2"]
     cell_3 = board.cells["A3"]
@@ -81,21 +79,20 @@ class BoardTest < Minitest::Test
   end
 
   def test_ships_cannot_over_lap
-    # skip
     board = Board.new
 
     cruiser = Ship.new("curiser", 3)
     submarine = Ship.new("submarine", 2)
-    board.place(cruiser, ["A1","A2","A3"])
+    board.place(cruiser, "A1,A2,A3" )
 
 
-    assert_equal false, board.valid_placement?(submarine, ["A2","B2"])
+    assert_equal false, board.valid_placement?(submarine, "A1,A2")
   end
 
   def test_board_can_render_user_and_comp_boards
     board = Board.new
     cruiser = Ship.new("curiser", 3)
-    board.place(cruiser, ["A1","A2","A3"])
+    board.place(cruiser, "A1,A2,A3")
 
     exact = " 1 2 3 4 \nA . . . . \nB . . . . \nC . . . . \nD . . . . \n"
     exact_1 = " 1 2 3 4 \nA S S S . \nB . . . . \nC . . . . \nD . . . . \n"
@@ -108,8 +105,8 @@ class BoardTest < Minitest::Test
     board = Board.new
     cruiser = Ship.new("curiser", 3)
     submarine = Ship.new("submarine", 2)
-    board.place(cruiser, ["A1","A2","A3"])
-    board.place(submarine, ["C1", "D1"])
+    board.place(cruiser, "A1,A2,A3")
+    board.place(submarine, "C1,D1")
     board.fire_shot("A1")
     board.fire_shot("B4")
     board.fire_shot("C1")

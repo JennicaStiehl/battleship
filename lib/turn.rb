@@ -1,8 +1,8 @@
 require './lib/board'
 
 class Turn
-  attr_reader :person,
-              :computer,
+  attr_reader :person_board,
+              :computer_board,
               :player_shot,
               :computer_shot
 
@@ -30,6 +30,7 @@ class Turn
         @computer_board.fire_shot(shot)
         @player_shot = shot
       end
+    else
       puts "Please try again."
       person_take_shot
     end

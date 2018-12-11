@@ -225,7 +225,11 @@ class Game
 
   def take_turn
     turn = Turn.new(self, @board, @comp_board)
-    turn.complete_turn
+    shots = turn.complete_turn
+    # {
+    #   player_shot: ,
+    #   computer_shot: ,
+    # }
     player_shots << turn.player_shot
     computer_shots << turn.computer_shot
         #render both boards

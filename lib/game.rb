@@ -42,7 +42,7 @@ class Game
         print "> "
         board_size = gets.chomp.to_i
         sleep 0.5
-        until board_size < 9
+        until board_size < 10
           puts "-" * 30
           puts "Im sorry, the board cannot be more that 9 rows/colums."
           sleep 1
@@ -235,7 +235,6 @@ class Game
   def taking_turns
     until @player_health < 1 || @comp_health < 1
       take_turn
-      break
     end
   end_game
   end
@@ -246,20 +245,16 @@ class Game
     elsif @comp_health < 1
       puts "You got lucky!"
     end
-  puts "Would you like to play another game?! (y/n)"
+  puts "Would you like to play another game?!"
+  puts "Enter 'yes' to play again... or hit enter to exit."
   user_input = gets.chomp.downcase
   sleep 1
-    until user_input == "y" || user_input == "n"
-      if user_input == "y"
+  until user_input == "y" || user_input == "n"
+    if user_input == "y"
       welcome
-      elsif user_input == "n"
-        # if comp_health < 1
-          puts "I'll get you next time!"
-
-        # elsif player_health < 1
-          puts "Better luck next time!"
-          puts "Goodbye!"
-          break
+    elsif user_input == "n"
+      puts "Goodbye!"
+        exit
       end
     end
   end

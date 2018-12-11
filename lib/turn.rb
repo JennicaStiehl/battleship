@@ -30,6 +30,7 @@ class Turn
         @computer_board.fire_shot(shot)
         @player_shot = shot
       end
+    else
       puts "Please try again."
       person_take_shot
     end

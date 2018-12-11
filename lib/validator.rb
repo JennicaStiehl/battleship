@@ -1,55 +1,52 @@
-require 'pry'
-class Validator
-  attr_reader :coordinates,
-              :ship,
-              :split_coordinates,
-              :coordinate_numbers,
-              :coordinate_letters
+module Validator
 
-  def initialize(ship, coordinates, board)
-    @ship = ship
-    @coordinates = coordinates
-    @board = board
-    @coordinate_numbers = []
-    @coordinate_letters = []
-  end
-
-  def split_coordinates
+  def split_coordinates(coordinates)
     split_coordinates = []
-    @coordinates.each do |coord|
+    coordinates.each do |coord|
       split_coordinates << coord.chars
     end
+    split_coordinates
+  end
+
+  def coordinate_numbers(split_coordinates)
+    coordinate_numbers = []
     split_coordinates.each do |number|
-      @coordinate_numbers << number[1]
+      coordinate_numbers << number[1]
     end
+    coordinate_numbers
+  end
+
+  def coordinate_letters(split_coordinates)
+    coordinate_letters = []
     split_coordinates.each do |letter|
-      @coordinate_letters << letter[0].ord
+      coordinate_letters << letter[0].ord
     end
+    coordinate_letters
   end
 
-  def consecutive_numbers
-    smallest = @coordinate_numbers.min
-    largest = @coordinate_numbers.max
-    (smallest..largest).count == @ship.length
+  def consecutive_numbers(coordinates, ship)
+    smallest = coordinates.min#@coordinate_numbers.min
+    largest = coordinates.max#@coordinate_numbers.max
+    (smallest..largest).count == ship.length
   end
 
-  def consecutive_alphabet
-    smallest = @coordinate_letters.min
-    largest = @coordinate_letters.max
-    (smallest..largest).count == @ship.length
+  def consecutive_alphabet(coordinates, ship)
+    smallest = coordinates.min#@coordinate_numbers.min
+    largest = coordinates.max#@coordinate_numbers.max
+    (smallest..largest).count == ship.length
   end
 
-  def same_number
-    @coordinate_numbers.uniq == [@coordinate_numbers[0]]
+  def same_number(coordinates)
+    coordinates.uniq == [coordinates[0]]
   end
 
-  def same_alphabet
-    @coordinate_letters.uniq == [@coordinate_letters[0]]
+  def same_alphabet(coordinates)
+    coordinates.uniq == [coordinates[0]]
   end
 
-  def overlapping_ships(coordinates)
+  def overlapping_ships(coordinates, board)
     coordinates.each do |coord|
-      if @board.cells[coord].empty? == true
+      if board.cells[coord].empty? == true #@board
         return true
       else
         return false
@@ -57,16 +54,18 @@ class Validator
     end
   end
 
-  def validation_check
-    if overlapping_ships(@coordinates)
-      split_coordinates
-      if @coordinates.uniq.count != @ship.length
+  def validation_check(ship, coordinates, board)
+    if overlapping_ships(coordinates, board)
+      split_coordinates = split_coordinates(coordinates)
+      coordinate_numbers = coordinate_numbers(split_coordinates)
+      coordinates_letters = coordinate_letters(split_coordinates)
+      if coordinates.uniq.count != ship.length #@ship
         return false
-      elsif consecutive_numbers && consecutive_alphabet
+      elsif consecutive_numbers(coordinate_numbers,ship) && consecutive_alphabet(coordinates_letters,ship)
         return false
-      elsif consecutive_numbers && same_alphabet
+      elsif consecutive_numbers(coordinate_numbers,ship) && same_alphabet(coordinates_letters)
         return true
-      elsif same_number && consecutive_alphabet
+      elsif same_number(coordinate_numbers) && consecutive_alphabet(coordinates_letters,ship)
         return true
       else
         return false

@@ -11,6 +11,8 @@ class Game
                 :comp_health
 
   def initialize
+    @player_1 = Player.new
+    @player_2 = Player.new
     @player_shots = []
     @computer_shots = []
     @player_health = 0
@@ -58,8 +60,8 @@ class Game
   end
 
   def setup(rows)
-    @board = Board.new(rows)
-    @comp_board = Board.new(rows)
+    @player_1.board = Board.new(rows) #@board =
+    @player_2.board = Board.new(rows) #@comp_board
     puts "-" * 30
     puts "Okay great, now to choose your ships!"
     puts "Here is a list of ships for you to choose from..."
@@ -250,7 +252,7 @@ class Game
       puts "You got lucky!"
     end
   puts "Would you like to play another game?!"
-  puts "Enter 'yes' to play again... or hit enter to exit."
+  puts "Enter 'yes' to play again... or hit 'n' to exit."
   user_input = gets.chomp.downcase
   sleep 1
   until user_input == "y" || user_input == "n"
@@ -259,7 +261,9 @@ class Game
     elsif user_input == "n"
       puts "Goodbye!"
         exit
-      end
+    end
+      puts "Enter 'yes' to play again... or hit 'n' to exit."
+      user_input = gets.chomp.downcase
     end
   end
 

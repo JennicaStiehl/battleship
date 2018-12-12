@@ -54,5 +54,4 @@ class TurnTest < Minitest::Test
 
     assert person.cells.include?(turn_1.computer_take_shot)
   end
-
 end

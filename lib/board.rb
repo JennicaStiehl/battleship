@@ -61,7 +61,6 @@ class Board
       board_numbers.to_a.each do |num|
         key = "#{letter}#{num.to_s}"
          string_1 += "#{@cells[key].render(ship)} "
-         # binding.pry
       end
       full_line << "#{alpha} #{string_1}\n"
     end

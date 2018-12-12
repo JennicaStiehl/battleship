@@ -24,5 +24,35 @@ class TurnTest < Minitest::Test
     assert_equal computer, turn_1.computer_board
   end
 
+  def test_person_can_take_a_shot
+    game = Game.new
+    person = Board.new(4)
+    computer = Board.new(4)
+    turn_1 = Turn.new(game, person, computer)
+
+    assert_equal true, turn_1.person_take_shot("A2")
+    assert_equal false, turn_1.person_take_shot("E2")
+  end
+
+  def test_person_already_shot
+    game = Game.new
+    person = Board.new(4)
+    computer = Board.new(4)
+    turn_1 = Turn.new(game, person, computer)
+
+    assert_equal false, turn_1.person_already_shoot?("A1")
+    turn_1.fire_persons_shot("A1")
+    game.player_shots << "A1"
+    assert_equal true, turn_1.person_already_shoot?("A1")
+  end
+
+  def test_the_computer_can_take_a_ahot
+    game = Game.new
+    person = Board.new(4)
+    computer = Board.new(4)
+    turn_1 = Turn.new(game, person, computer)
+
+    assert person.cells.include?(turn_1.computer_take_shot)
+  end
 
 end

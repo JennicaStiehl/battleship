@@ -10,8 +10,6 @@ class Turn
     @game = game
   end
 
-
-
   def person_take_shot(shot)
     @computer_board.valid_coordinate?(shot)
   end
@@ -22,7 +20,6 @@ class Turn
 
   def fire_persons_shot(shot)
     @computer_board.fire_shot(shot)
-    # @player_shot = shot
   end
 
   def computer_take_shot
@@ -37,14 +34,5 @@ class Turn
     @person_board.fire_shot(shot)
     @computer_shot = shot
   end
-
-  #
-  # def complete_turn
-  #   # render_turn
-  #   person_take_shot
-  #   person_turn_outcome
-  #   computer_take_shot
-  #   comp_turn_outcome
-  # end
 
 end

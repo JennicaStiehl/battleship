@@ -2,9 +2,7 @@ require './lib/board'
 
 class Turn
   attr_reader :person_board,
-              :computer_board,
-              :player_shot,
-              :computer_shot
+              :computer_board
 
   def initialize(game, person, computer)
     @person_board = person
@@ -15,16 +13,16 @@ class Turn
 
 
   def person_take_shot(shot)
-    @computer_board.valid_coordinate?(shot) == true
+    @computer_board.valid_coordinate?(shot)
   end
 
   def person_already_shoot?(shot)
-    @game.player_shots.include?(shot) == true
+    @game.player_shots.include?(shot)
   end
 
   def fire_persons_shot(shot)
     @computer_board.fire_shot(shot)
-    @player_shot = shot
+    # @player_shot = shot
   end
 
   def computer_take_shot

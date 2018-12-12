@@ -240,13 +240,15 @@ class Game
        puts "Sorry that is an invalid coordinates"
        shot = gets.chomp.upcase
      end
-     until turn.person_already_shoot?(shot) != true
+     until turn.person_already_shoot?(shot) == true
        puts "You have already fired at that location!"
        shot = gets.chomp.upcase
      end
      turn.fire_persons_shot(shot)
+     @person_shots << shot
      comp_shot = turn.computer_take_shot
      turn.computer_shot(comp_shot)
+     @computer_shots << comp_shot
      person_turn_outcome(shot)
      comp_turn_outcome(comp_shot)
    end

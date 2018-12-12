@@ -24,6 +24,7 @@ class TurnTest < Minitest::Test
     assert_equal computer, turn_1.computer_board
   end
 
+
   def test_person_can_take_a_shot
     game = Game.new
     person = Board.new(4)
@@ -54,4 +55,5 @@ class TurnTest < Minitest::Test
 
     assert person.cells.include?(turn_1.computer_take_shot)
   end
+
 end

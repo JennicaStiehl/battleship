@@ -11,6 +11,8 @@ class Game
                 :comp_health
 
   def initialize
+    @player_1 = Player.new
+    @player_2 = Player.new
     @player_shots = []
     @computer_shots = []
     @player_health = 0
@@ -58,8 +60,8 @@ class Game
   end
 
   def setup(rows)
-    @board = Board.new(rows)
-    @comp_board = Board.new(rows)
+    @player_1.board = Board.new(rows) #@board =
+    @player_2.board = Board.new(rows) #@comp_board
     puts "-" * 30
     puts "Okay great, now to choose your ships!"
     puts "Here is a list of ships for you to choose from..."
@@ -92,36 +94,27 @@ class Game
     end
   end
 
-  def ship_length_not_too_long(ship, comp_ship)
-    if ship.length < @board.number
-      ship_placement_response(ship,comp_ship)
-    else
-      puts "That ship is too large."
-      ship_list
-    end
-  end
-
   def ship_creation(user_input)
     if user_input == "carrier"
       ship = Ship.new("Carrier", 5)
       comp_ship = Ship.new("Carrier", 5)
-      ship_length_not_too_long(ship,comp_ship)
+      ship_placement_response(ship, comp_ship)
     elsif user_input == "battleship"
       ship = Ship.new("Battleship", 4)
       comp_ship = Ship.new("Battleship", 4)
-      ship_length_not_too_long(ship,comp_ship)
+      ship_placement_response(ship, comp_ship)
     elsif user_input == "cruiser"
       ship = Ship.new("Cruiser", 3)
       comp_ship = Ship.new("Cruiser", 3)
-      ship_length_not_too_long(ship,comp_ship)
+      ship_placement_response(ship, comp_ship)
     elsif user_input == "submarine"
       ship = Ship.new("Submarine", 3)
       comp_ship = Ship.new("Submarine", 3)
-      ship_length_not_too_long(ship,comp_ship)
+      ship_placement_response(ship, comp_ship)
     elsif user_input == "destroyer"
       ship = Ship.new("Destroyer", 2)
       comp_ship = Ship.new("Destroyer", 2)
-      ship_length_not_too_long(ship,comp_ship)
+      ship_placement_response(ship, comp_ship)
     elsif user_input == "custom"
       puts "What will be the name of your Ship?"
       print "> "
@@ -133,7 +126,7 @@ class Game
       sleep 0.5
       ship = Ship.new(ship_name, ship_length)
       comp_ship = Ship.new(ship_name, ship_length)
-      ship_length_not_too_long(ship,comp_ship)
+      ship_placement_response(ship, comp_ship)
     else
       puts "That is not a recognized ship."
       puts "Lets try that again..."
@@ -233,63 +226,23 @@ class Game
   end
 
   def take_turn
-     turn = Turn.new(self, @board, @comp_board)
-     puts "Please enter a coordinate."
-     shot = gets.chomp.upcase
-     until turn.person_take_shot(shot) == true
-       puts "Sorry that is an invalid coordinates"
-       shot = gets.chomp.upcase
-     end
-     until turn.person_already_shoot?(shot) != true
-       puts "You have already fired at that location!"
-       shot = gets.chomp.upcase
-     end
-     turn.fire_persons_shot(shot)
-     @player_shots << shot
-     comp_shot = turn.computer_take_shot
-     turn.computer_shot(comp_shot)
-     @computer_shots << comp_shot
-     person_turn_outcome(shot)
-     comp_turn_outcome(comp_shot)
-   end
+    turn = Turn.new(self, @board, @comp_board)
+    shots = turn.complete_turn
+    # {
+    #   player_shot: ,
+    #   computer_shot: ,
+    # }
+    player_shots << turn.player_shot
+    computer_shots << turn.computer_shot
+        #render both boards
+    #report results
+  end
 
   def taking_turns
     until @player_health < 1 || @comp_health < 1
-      render_boards
       take_turn
     end
   end_game
-  end
-
-  def render_boards
-    puts "=" * 15 + " Computer Board " + "=" * 15
-    puts @comp_board.render(false)
-    puts "=" * 15 + " Player Board " + "=" * 16
-    puts @board.render(true)
-  end
-
-  def person_turn_outcome(shot)
-    cell = @comp_board.cells[shot]
-    if  cell.empty? == true
-        puts "You missed!"
-    elsif  cell.ship.sunk? == true
-      puts "You sunk my #{cell.ship.name}!"
-      self.comp_health -= 1
-    else
-      puts "Stahp. You hit my ship!"
-    end
-  end
-
-  def comp_turn_outcome(shot)
-    cell = @board.cells[shot]
-    if cell.empty? == true
-      puts "i missed my shot!"
-    elsif cell.ship.sunk?
-      "It loks like i sunk your #{cell.ship.name}!"
-      self.player_health -= 1
-    else
-      puts "I hit one of your ships!"
-    end
   end
 
   def end_game
@@ -299,17 +252,18 @@ class Game
       puts "You got lucky!"
     end
   puts "Would you like to play another game?!"
-  puts "Enter 'y' to play again... or enter 'n' to exit."
+  puts "Enter 'yes' to play again... or hit 'n' to exit."
   user_input = gets.chomp.downcase
   sleep 1
   until user_input == "y" || user_input == "n"
-    user_input = gets.chomp.downcase
-  end
     if user_input == "y"
       welcome
     elsif user_input == "n"
       puts "Goodbye!"
         exit
+    end
+      puts "Enter 'yes' to play again... or hit 'n' to exit."
+      user_input = gets.chomp.downcase
     end
   end
 

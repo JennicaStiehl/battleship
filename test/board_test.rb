@@ -19,10 +19,7 @@ class BoardTest < Minitest::Test
   end
 
   def test_it_can_validate_coordinate
-    # skip
     board = Board.new
-
-
 
     assert_equal true, board.valid_coordinate?("A1")
     assert_equal true, board.valid_coordinate?("D4")
@@ -32,7 +29,6 @@ class BoardTest < Minitest::Test
   end
 
   def test_it_can_invalidate_placement_by_length
-    # skip
     board = Board.new
 
     cruiser = Ship.new("curiser", 3)

@@ -11,6 +11,8 @@ class Game
                 :comp_health
 
   def initialize
+    @player_1 = Player.new
+    @player_2 = Player.new
     @player_shots = []
     @computer_shots = []
     @player_health = 0
@@ -58,8 +60,8 @@ class Game
   end
 
   def setup(rows)
-    @board = Board.new(rows)
-    @comp_board = Board.new(rows)
+    @player_1.board = Board.new(rows) #@board =
+    @player_2.board = Board.new(rows) #@comp_board
     puts "-" * 30
     puts "Okay great, now to choose your ships!"
     puts "Here is a list of ships for you to choose from..."

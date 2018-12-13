@@ -38,28 +38,37 @@ class Game
       end
       if user_input == "p"
         puts "-" * 30
-        puts "How many rows/columns would you like your board to be?"
+        puts "How many rows would you like your board to be?"
         print "> "
-        board_size = gets.chomp.to_i
-        sleep 0.5
-        until board_size < 10
+        row_size = gets.chomp.to_i
+        sleep 1
+        puts "How many columns would you like your board to be?"
+        print "> "
+        column_size = gets.chomp.to_i
+        sleep 1
+        until row_size < 10 && column_size < 10
           puts "-" * 30
           puts "Im sorry, the board cannot be more that 9 rows/colums."
           sleep 1
-          puts "How many rows/columns would you like your board to be?"
+          puts "How many rows would you like your board to be?"
           print "> "
-          board_size = gets.chomp.to_i
+          row_size = gets.chomp.to_i
+          sleep 1
+          puts "How many columns would you like your board to be?"
+          print "> "
+          column_size = gets.chomp.to_i
           sleep 1
         end
-        setup(board_size)
+        setup(row_size, column_size)
       else
         puts "See ya soon ;)"
+        exit
       end
   end
 
-  def setup(rows)
-    @board = Board.new(rows)
-    @comp_board = Board.new(rows)
+  def setup(row_size, column_size)
+    @board = Board.new(row_size, column_size)
+    @comp_board = Board.new(row_size, column_size)
     puts "-" * 30
     puts "Okay great, now to choose your ships!"
     puts "Here is a list of ships for you to choose from..."
@@ -72,28 +81,40 @@ class Game
   end
 
   def ship_list
-    puts ""
-    puts "- Carrier - The mighty Aircraft Carrier. Has '5' health."
-    puts "- Battleship - The all powerfull Battleship. Has '4' health."
-    puts "- Cruiser - The small but strong Cruiser. Has '3' health. "
-    puts "- Submarine - The unditectibale Submarine. Has '3' health."
-    puts "- Destroyer - The destroyer. Quick and Powerful. Has '2' health."
-    puts "- Custom - Make your own ship..."
-    puts "Just type the 'name' of the ship you wish to place."
-    puts ""
-    puts "Or type 'start' whenever you are ready to play the game."
-    print "> "
-    user_input = gets.chomp.downcase
-    sleep 0.5
-      if user_input == "start"
-        taking_turns
-      else
-        ship_creation(user_input)
+    empty_cells = []
+    @comp_board.cells.values.each do |cell|
+      if cell.empty? == true
+        empty_cells.push(cell)
+      end
+    end
+    empty_cells.count
+    half_board = @comp_board.cells.count / 2
+    if empty_cells.count < half_board
+      taking_turns
+    else
+      puts ""
+      puts "- Carrier - The mighty Aircraft Carrier. Has '5' health."
+      puts "- Battleship - The all powerfull Battleship. Has '4' health."
+      puts "- Cruiser - The small but strong Cruiser. Has '3' health. "
+      puts "- Submarine - The unditectibale Submarine. Has '3' health."
+      puts "- Destroyer - The destroyer. Quick and Powerful. Has '2' health."
+      puts "- Custom - Make your own ship..."
+      puts "Just type the 'name' of the ship you wish to place."
+      puts ""
+      puts "Or type 'start' whenever you are ready to play the game."
+      print "> "
+      user_input = gets.chomp.downcase
+      sleep 0.5
+        if user_input == "start"
+          taking_turns
+        else
+          ship_creation(user_input)
+        end
     end
   end
 
   def ship_length_not_too_long(ship, comp_ship)
-    if ship.length < @board.number
+    if ship.length <= @board.row || ship.length <= @board.column
       ship_placement_response(ship,comp_ship)
     else
       puts "That ship is too large."
@@ -127,10 +148,18 @@ class Game
       print "> "
       ship_name = gets.chomp.capitalize
       sleep 0.5
-      puts "How much health(up to 9) does this ship have?"
+      puts "Custom ships must have more than 1 and less than 10 health."
+      puts "How much health does this ship have?"
       print "> "
       ship_length = gets.chomp.to_i
       sleep 0.5
+      until ship_length < 10 && ship_length > 1
+        puts "Custom ships must have more than 1 and less than 10 health."
+        puts "How much health does this ship have?"
+        print "> "
+        ship_length = gets.chomp.to_i
+        sleep 0.5
+      end
       ship = Ship.new(ship_name, ship_length)
       comp_ship = Ship.new(ship_name, ship_length)
       ship_length_not_too_long(ship,comp_ship)
@@ -169,8 +198,6 @@ class Game
     # end
     # ship_placement_response(ship, comp_ship)
     end
-    puts "Go ahead and place as many ships as you would like..."
-    puts "Keep in mind.. I get them too!"
     ship_list
   end
 
@@ -183,7 +210,6 @@ class Game
 
   def comp_cord_generator(ship)
     number_of_coord = ship.length
-    rows = @comp_board.number
     final_coord = ""
 
     empty_spaces = []
@@ -193,26 +219,26 @@ class Game
       end
     end
     first_coord = empty_spaces.shuffle[0]
-    random = hor_or_vert = rand(0..1)
+    #random = hor_or_vert = rand(0..1)
     single_digit = first_coord.split(//)
     first_coord =
     coordinates = []
     vert = []
-    if random == 1
+    #if random == 1
       empty_spaces.each do |space|
         vert << space if space.include?(single_digit[1])
       end
       vert.each_cons(number_of_coord) do |group|
         coordinates << group
       end
-    else
+    #else
       empty_spaces.each do |space|
         vert << space if space.include?(single_digit[0])
       end
       vert.each_cons(number_of_coord) do |group|
         coordinates << group
       end
-    end
+    #end
 
     # empty_spaces.each_cons(number_of_coord) do |group|
     #   coordinates << group

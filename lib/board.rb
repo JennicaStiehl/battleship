@@ -2,8 +2,6 @@ require './lib/cell'
 require './lib/validator'
 
 class Board
-  include Validator
-
   attr_reader :cells,
               :number
 
@@ -14,8 +12,8 @@ class Board
   end
 
   def create_board(number)
-    board_letters.each do |row|
-      board_numbers.each do |column|
+    ('A'..('A'.ord + (number - 1)).chr).to_a.each do |row|
+      (1..number).to_a.each do |column|
         coordinate = row + column.to_s
         @cells[coordinate] = Cell.new(coordinate)
       end
@@ -30,12 +28,13 @@ class Board
 
   def valid_placement?(ship, coordinates)
     if coordinates.class == String
-      split_coordinates = coordinates.split(",")
-      validation_check(ship, split_coordinates, self)
+      # binding.pry
+      split_coordin = coordinates.split(",")
     else
-      validation_check(ship, coordinates, self)
+      split_coordin = coordinates
     end
-    # placement = Validator.new(ship, split_coordin, self)
+    placement = Validator.new(ship, split_coordin, self)
+    placement.validation_check
   end
 
   def place(ship, coordinates)
@@ -51,17 +50,16 @@ class Board
 
     alpha = ""
     full_line = ""
-     board_numbers.each do |num|
+     (1..@number).to_a.each do |num|
        string << " #{num}"
      end
      full_line << "#{string} \n"
-    board_letters.each do |letter|
+    ('A'..('A'.ord + (@number -1)).chr).to_a.each do |letter|
        alpha = letter
        string_1 = ""
-      board_numbers.to_a.each do |num|
+      (1..@number).to_a.each do |num|
         key = "#{letter}#{num.to_s}"
          string_1 += "#{@cells[key].render(ship)} "
-         # binding.pry
       end
       full_line << "#{alpha} #{string_1}\n"
     end
@@ -70,14 +68,6 @@ class Board
 
   def fire_shot(cell)
     @cells[cell].fired_upon
-  end
-
-  def board_letters
-    ('A'..('A'.ord + (number - 1)).chr).to_a
-  end
-
-  def board_numbers
-    (1..@number).to_a
   end
 
 end
